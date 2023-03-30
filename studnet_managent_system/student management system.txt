@@ -1,0 +1,234 @@
+#include<iostream>
+#include<fstream>
+#include<stdlib.h>
+#include<cstdlib>
+#include<conio.h>
+using namespace std;
+
+class student
+{
+	private:
+		string name,roll_no,course,address,email_id,contact_no;
+	
+	
+	public:
+		void menu();
+		void insert();
+		void display();
+		void modify();
+		void search();
+};
+void student::search()
+{
+	system("cls");
+	fstream file;
+	int found=0;
+	file.open("studentRecord.txt",ios::in);
+	if(!file)
+	{
+		cout<<"\n\t\t\t   no data is present";
+		file.close();
+		
+	}
+	else
+	{
+		string rollno;
+		cout<<"\n----------------------------------------------------------------------------------------------------------------"<<endl;
+		cout<<"-------------------------------------------STUDENT SEARCH DATA ---------------------------------------------------"<<endl;
+		cout<<"\n Enter rollnumber of student which oyu search:  ";
+		cin>>rollno;
+		file>> name >> roll_no >> course >> email_id >> contact_no >> address;
+		while(!file.eof())
+		{
+			if(rollno == roll_no)
+			{
+			cout<<"\n\t\t\t Studen Name: "<< name <<endl;
+			cout<<"\t\t\t Studen Roll No: "<< roll_no <<endl;
+			cout<<"\t\t\t Studen course: "<< course <<endl;
+			cout<<"\t\t\t Studen emailId: "<< email_id <<endl;
+			cout<<"\t\t\t Studen Address: "<< address <<endl;
+			found++;	
+			}
+			file>> name >> roll_no >> course >> email_id >> contact_no >> address;
+		}
+		if(found ==0)
+		{
+			cout<<"\n\t\t\t\t Student roll number not found.......";
+		}
+		file.close();
+	}
+}
+void student::modify()
+{
+	system("cls");
+	string rollno;
+	int found=0;
+	fstream file,file1;
+	cout<<"\n---------------------------------------------------------------------------------------------------------"<<endl;
+	cout<<"---------------------------------------------Student Modify Details----------------------------------------"<<endl;
+	file.open("studentRecord.txt",ios::in);
+	if(!file)
+	{
+		cout<<"\n\t\t\tNo data is present****";
+		file.close();
+		
+	}
+	else 
+	{
+		cout<<"\n Enter the rollnumber of student which you want to modify : ";
+		cin>>rollno;
+		file1.open("Record.txt",ios::app | ios::out);
+		file>> name >> roll_no >> course >> email_id >> contact_no >> address;
+		while(!file.eof())
+		{
+			if(rollno != roll_no)
+			{
+				file1<<" "<< name <<" "<< roll_no <<" " << course <<" " << email_id <<" "<< contact_no<<" "<< address <<"\n";
+			}
+			else
+			{
+				cout<<"\t\t\tEnter Name:  ";
+            	cin>>name;
+            	cout<<"\t\t\tEnter Roll number:  ";
+   	            cin>>roll_no;
+	            cout<<"\t\t\tEnter course:  ";
+	            cin>>course;
+	            cout<<"\t\t\tEnter address:  ";
+	            cin>>address;
+	            cout<<"\t\t\tEnter email id:  ";
+	            cin>>email_id;
+               	cout<<"\t\t\tEnter contact_no:  ";
+	            cin>>contact_no;
+	            file1<<" "<< name <<" "<< roll_no <<" " << course <<" " << email_id <<" "<< contact_no<<" "<< address <<"\n";
+	            found++;
+			}
+			file>> name >> roll_no >> course >> email_id >> contact_no >> address;
+			if(found == 0)
+			{
+				cout<<"\n\t\t\t Student roll number not found.......";
+			}
+			}
+			file1.close();
+			file.close();
+			remove("studentRecord.txt");
+			rename("Record.txt","studentRecord.txt");
+		
+	}
+}
+void student::display()
+{
+	system("cls");
+	fstream file;
+	int total=0;
+	cout<<"------------------------------------------------------------------------------------------------------"<<endl;
+	cout<<"---------------------------------------Student Record Table-------------------------------------------"<<endl;
+	file.open("studentRecord.txt",ios::in);
+	if(!file)
+	{
+		cout<<"\n\t\t\t No data present*****";
+		file.close();
+	}
+	else
+	{
+		file>> name >> roll_no >> course >> email_id >> contact_no >> address;
+		while(!file.eof())
+		{
+			cout<<"\n\n\t\t\t Student No.  "<<total++<<endl;
+			cout<<"\t\t\t Studen Name: "<< name <<endl;
+			cout<<"\t\t\t Studen Roll No: "<< roll_no <<endl;
+			cout<<"\t\t\t Studen course: "<< course <<endl;
+			cout<<"\t\t\t Studen emailId: "<< email_id <<endl;
+			cout<<"\t\t\t Studen Address: "<< address <<endl;
+			file>> name >> roll_no >> course >> email_id >> contact_no >> address;
+		}
+		if(total == 0)
+		{
+			cout<<"\n\t\t\t No data is Present****";
+		}
+	}
+	file.close();
+}
+void student::insert()
+{
+	system("cls");
+	fstream file;
+	cout<<"-----------------------------Add Student Details-------------------------"<<endl;
+	cout<<"\t\t\tEnter Name:  ";
+	cin>>name;
+	cout<<"\t\t\tEnter Roll number:  ";
+	cin>>roll_no;
+	cout<<"\t\t\tEnter course:  ";
+	cin>>course;
+	cout<<"\t\t\tEnter address:  ";
+	cin>>address;
+	cout<<"\t\t\tEnter email id:  ";
+	cin>>email_id;
+	cout<<"\t\t\tEnter contact_no:  ";
+	cin>>contact_no;
+	file.open("studentRecord.txt",ios::app | ios::out);
+	file<<" "<< name <<" "<< roll_no <<" " << course <<" " << email_id <<" "<< contact_no<<" "<< address <<"\n";
+	file.close();
+	
+}
+void student::menu()
+{
+	menustart:
+	int choice;
+	char x;
+	system("cls");
+	
+	cout<<"\t\t\t---------------------------------------------------"<<endl;
+	cout<<"\t\t\t|||||||||||STUDENT  MANAGEMENT SYSYTEM|||||||||||||"<<endl;
+	cout<<"\t\t\t---------------------------------------------------"<<endl;
+	cout<<"\t\t\t1. Enter the new record "<<endl;
+	cout<<"\t\t\t2. Display record "<<endl;
+	cout<<"\t\t\t3. Modify record"<<endl;
+	cout<<"\t\t\t4. Search record "<<endl;
+	cout<<"\t\t\t5. EXIT"<<endl;
+	
+	cout<<"\t\t\t----------------------------------------------------"<<endl;
+	cout<<"\t\t\t Choose Option [1/2/3/4/5/6]"<<endl;
+	cout<<"\t\t\t----------------------------------------------------"<<endl;
+	
+	cout<<"Enter your choose!!!!!  ";
+	cin>>choice;
+	switch(choice)
+	{
+		case 1:
+			do
+			{
+			
+			insert();
+			cout<<"\n\t\t\t ADD ANOTHER STUDENT RECORD ( y / n): ";
+			cin>>x;
+	     	}while(x=='y');
+			break;
+		case 2:
+			display();
+			break;
+		case 3:
+			modify();
+			break;
+		case 4:
+			search();
+			break;
+		
+		case 5:
+		     exit(0);	
+		
+		default:
+			cout<<"invalid choice......plse try again...";
+			
+			
+			
+	}
+	getch();
+	goto menustart;
+	
+	
+}
+main()
+{
+	student project;
+	project.menu();
+}
